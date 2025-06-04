@@ -18,6 +18,9 @@ user_data_dir = os.path.join(os.getenv("LOCALAPPDATA"), "BraveSoftware", "Brave-
 profile_dir = "FlowerPower"
 port_arg = "--remote-debugging-port=9222"
 
+
+
+
 def wait_for_debug_port(host="localhost", port=9222, timeout=15):
     start = time.time()
     while time.time() - start < timeout:
@@ -95,6 +98,159 @@ def launch_brave_debug_if_needed():
 
     if not wait_for_debug_port():
         raise RuntimeError("Brave ne répond pas sur le port 9222")
+    
+def show_profile_ready_popup(parent=None):
+    confirmed = {"value": False}
+
+    def on_confirm():
+        confirmed["value"] = True
+        with open(profile_flag, "w") as f:
+                f.write("ready")
+                print("✅ Connexion validée.")
+        if spin_job["id"]:
+            try:
+                popup.after_cancel(spin_job["id"])
+            except:
+                pass
+        popup.destroy()
+
+    def disable_close():
+        pass  # empêche fermeture avec X ou Alt+F4
+
+    popup = tk.Toplevel(parent) if parent else tk.Toplevel()
+    popup.title("Etapes Essentielles !")
+    popup.configure(bg="black")
+    popup.resizable(False, False)
+    popup.protocol("WM_DELETE_WINDOW", disable_close)
+    popup.attributes("-topmost", True)
+
+    # Dimensions finales
+    final_w, final_h = 450, 460
+    screen_w = popup.winfo_screenwidth()
+    screen_h = popup.winfo_screenheight()
+    x = (screen_w // 2) - (final_w // 2)
+    y = (screen_h // 2) - (final_h // 2)
+
+    # Commence petit
+    popup.geometry(f"50x50+{x}+{y}")
+    popup.update()
+
+
+    style = ttk.Style(popup)
+    style.configure("Modern.TButton", font=("Segoe UI", 10, "bold"),
+                    foreground="#000000", background="#3A3A3A",
+                    borderwidth=0, padding=10)
+    style.map("Modern.TButton", background=[("active", "#5A5A5A")])
+
+    container = tk.Frame(popup, bg="black")
+    container.pack(expand=True)
+
+    logo_path = os.path.join(os.path.dirname(__file__), "img/logo_fleur.png")
+    if os.path.exists(logo_path):
+        img = Image.open(logo_path).resize((64, 64))
+        photo = ImageTk.PhotoImage(img)
+        logo_label = tk.Label(container, image=photo, bg="black")
+        logo_label.image = photo
+        logo_label.pack(pady=10)
+        popup.iconphoto(True, photo)
+
+        # Variables attachées à popup
+        popup.logo_img_original = img
+        popup.logo_label = logo_label
+        
+        spin_job = {"id": None}
+        
+        def animate_fade_spin_grow(step=0, total_steps=40):
+            t = step / total_steps
+
+            # Interpolation progressive
+            scale = t
+            alpha = min(1.0, t)
+
+            w = int(final_w * scale)
+            h = int(final_h * scale)
+            dx = (final_w - w) // 2
+            dy = (final_h - h) // 2
+            popup.geometry(f"{w}x{h}+{x + dx}+{y + dy}")
+            popup.wm_attributes("-alpha", alpha)
+
+            if step < total_steps:
+                popup.after(16, animate_fade_spin_grow, step + 1, total_steps)
+
+        def spin_logo(angle=0):
+            if not popup.winfo_exists():
+                return
+            if hasattr(popup, "logo_img_original") and hasattr(popup, "logo_label"):
+                rotated = popup.logo_img_original.rotate(angle, resample=Image.BICUBIC)
+                rotated_photo = ImageTk.PhotoImage(rotated)
+                popup.logo_label.configure(image=rotated_photo)
+                popup.logo_label.image = rotated_photo
+                spin_job["id"] = popup.after(40, spin_logo, (angle + 3) % 360)
+
+        animate_fade_spin_grow()
+        spin_logo()
+
+
+    important_lbl = tk.Label(
+        container,
+        text="Important : Veuillez en premier lieu installer le navigateur Brave si vous ne le possédez pas !",
+        bg="black",
+        fg="yellow",
+        font=("Helvetica", 10, "bold"),
+        wraplength=400,
+        justify="center"
+    )
+    important_lbl.pack(pady=(0, 8))
+
+    dl_btn = ttk.Button(
+        container,
+        text="Télécharger Brave",
+        command=lambda: webbrowser.open("https://brave.com/fr/download/"),
+        style="Modern.TButton"
+    )
+    dl_btn.pack(pady=(0, 12))
+    
+    brave_done_lbl = tk.Label(
+    container,
+    text="Une fois Brave installé cliquez ici !",
+    bg="black",
+    fg="yellow",
+    font=("Segoe UI", 9, "bold"),
+    wraplength=400,
+    justify="center"
+    )
+    brave_done_lbl.pack(pady=(0, 6))
+
+    brave_installed_btn = ttk.Button(
+    container,
+    text="Brave Installé",
+    command=ensure_flower_power_profile,
+    style="Modern.TButton"
+    )
+    brave_installed_btn.pack(pady=(0, 20))
+
+
+    message = tk.Label(
+        container,
+        text="Veuillez créer un compte ou vous connecter\nsur le site KingPet (dans Brave).\n\nUne fois terminé, cliquez sur le bouton ci-dessous.",
+        font=("Segoe UI", 10),
+        fg="yellow",
+        bg="black",
+        justify="center",
+        wraplength=420
+    )
+    message.pack(pady=(0, 20))
+
+    ok_btn = ttk.Button(container, text="J’ai terminé", command=on_confirm, style="Modern.TButton")
+    ok_btn.pack()
+
+    popup.grab_set()
+    if parent:
+        parent.wait_window(popup)
+    else:
+        popup.mainloop()
+
+    return confirmed["value"]
 
 def ensure_flower_power_profile():
     url_vote = "https://www.kingpet.fr/vote/flower437"
