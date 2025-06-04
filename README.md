@@ -45,7 +45,7 @@ Parce qu’il n’y a rien de plus loyal qu’un script qui clique pour son anim
 3. **Installe Brave Browser** (si ce n’est pas déjà fait)  
    https://brave.com/fr/download/
 
-4. **Place le chromedriver dans le dossier `driver/`**  
+4. **Place/remplace le chromedriver dans le dossier `driver/`**  
    (compatible avec ta version de Brave/Chromium)
 
 5. **Lance le script**  
@@ -57,7 +57,15 @@ Parce qu’il n’y a rien de plus loyal qu’un script qui clique pour son anim
 
 ## 📷 Aperçu
 
-<img src="https://placehold.co/500x300?text=UI+Preview" alt="UI preview" />
+<img src="http://ninjaaiorfree.fr/fauto.jpg" alt="Flower Autovote" />
+
+---
+
+## ✍️ Auteurs
+
+**Développé par Fawn**
+- 🧠 Aide : ChatGPT, ton assistant Python fidèle
+🎬 Démos vidéo : [http://ninjaaior.free.fr/devdemos/index.html](http://ninjaaior.free.fr/devdemos/index.html)
 
 ---
 
@@ -105,7 +113,17 @@ Parce qu’il n’y a rien de plus loyal qu’un script qui clique pour son anim
 
 ## 🐾 Soutien moral
 
-Si ce script t’aide à faire gagner Flower, n’oublie pas d’offrir une friandise à ton compagnon à 4 pattes 💝
+Si ce script t’aide à le faire gagner, n’oublie pas d’offrir une friandise à ton compagnon à 4 pattes 💝
+
+---
+
+## ☕ Offrez un p'tit café au développeur ?
+
+Si cet outil vous a été utile, vous pouvez soutenir le développement (et la consommation excessive de café ☕) ici :
+
+➡️ [![Donate](icon/donate.png)](https://www.paypal.com/paypalme/noobpythondev)
+
+Un grand merci ! 💙
 
 ---
 
@@ -114,9 +132,3 @@ Si ce script t’aide à faire gagner Flower, n’oublie pas d’offrir une fria
 > Ce projet est un outil personnel, fourni à des fins éducatives.  
 > À utiliser de manière responsable, dans le respect des règles du site KingPet.
 
----
-
-## 🐍 Auteurs
-
-- 💻 Code : *Toi, l'humain génial derrière ce projet*
-- 🧠 Aide : ChatGPT, ton assistant Python fidèle
