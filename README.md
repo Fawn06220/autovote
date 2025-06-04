@@ -57,7 +57,7 @@ Parce qu’il n’y a rien de plus loyal qu’un script qui clique pour son anim
 
 ## 📷 Aperçu
 
-<img src="http://ninjaaiorfree.fr/fauto.jpg" alt="Flower Autovote" />
+<img src="demo/fauto.jpg" alt="Flower Autovote" />
 
 ---
 
@@ -66,7 +66,7 @@ Parce qu’il n’y a rien de plus loyal qu’un script qui clique pour son anim
 **Développé par Fawn**
 - 🧠 Aide : ChatGPT, ton assistant Python fidèle
 
--🎬 Démos vidéo : [http://ninjaaior.free.fr/devdemos/index.html](http://ninjaaior.free.fr/devdemos/index.html)
+- 🎬 Démos vidéo : [http://ninjaaior.free.fr/devdemos/index.html](http://ninjaaior.free.fr/devdemos/index.html)
 
 ---
 
@@ -122,7 +122,7 @@ Si ce script t’aide à le faire gagner, n’oublie pas d’offrir une friandis
 
 Si cet outil vous a été utile, vous pouvez soutenir le développement (et la consommation excessive de café ☕) ici :
 
-➡️ [![Donate](icon/donate.png)](https://www.paypal.com/paypalme/noobpythondev)
+➡️ [![Donate](demo/donate.png)](https://www.paypal.com/paypalme/noobpythondev)
 
 Un grand merci ! 💙
 
