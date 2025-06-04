@@ -34,58 +34,41 @@ def wait_for_debug_port(host="localhost", port=9222, timeout=15):
     return False
 
 def launch_brave_debug_if_needed():
-    def detect_conflicting_brave_instances():
-        found_good = False
-        print("\n🧪 Analyse des processus Brave principaux...\n")
-        for proc in psutil.process_iter(['pid', 'name', 'cmdline']):
-            try:
-                name = proc.info['name']
-                cmdline_list = proc.info['cmdline']
-                if not cmdline_list or not isinstance(cmdline_list, list):
-                    continue
-                cmdline = " ".join(cmdline_list).lower()
-                if name and "brave" in name.lower():
-                    print(f"🔎 PID {proc.pid} | CMD: {cmdline}")
-                    if any(arg.startswith("--type=") for arg in cmdline_list):
-                        continue
-                    is_flower = "--profile-directory=flowerpower" in cmdline
-                    has_debug = "--remote-debugging-port=9222" in cmdline
-                    if is_flower and has_debug:
-                        print("✅ Bonne instance Brave détectée.")
-                        found_good = True
-                    else:
-                        print("❌ Conflit : Brave lancé avec mauvais profil ou sans port debug.")
-                        return True
-            except (psutil.NoSuchProcess, psutil.AccessDenied):
-                continue
-        return False if found_good else False
-
-    if detect_conflicting_brave_instances():
-        messagebox.showerror("Brave déjà ouvert",
-            "❌ Brave est déjà ouvert avec un autre profil.\n\n"
-            "Veuillez fermer toutes les fenêtres Brave avant de démarrer le vote.")
-        raise RuntimeError("Brave conflict: autre instance active")
-
-    for proc in psutil.process_iter(['name', 'cmdline']):
-        try:
-            if proc.info['name'] and "brave" in proc.info['name'].lower():
-                cmd = " ".join(proc.info['cmdline'])
-                if "FlowerPower" in cmd and port_arg in cmd:
-                    print("✅ Brave FlowerPower déjà lancé avec port 9222")
-                    return
-        except (psutil.NoSuchProcess, psutil.AccessDenied):
-            continue
+    found_good = False
+    print("\n🧪 Analyse des processus Brave principaux...\n")
 
     for proc in psutil.process_iter(['pid', 'name', 'cmdline']):
         try:
-            if proc.info['name'] and "brave" in proc.info['name'].lower():
-                if any("FlowerPower" in arg for arg in proc.info['cmdline']):
-                    print(f"🛑 Fermeture résiduelle de Brave FlowerPower (PID {proc.pid})")
-                    proc.terminate()
+            name = proc.info['name']
+            cmdline_list = proc.info['cmdline']
+            if not cmdline_list or not isinstance(cmdline_list, list):
+                continue
+            cmdline = " ".join(cmdline_list).lower()
+
+            if name and "brave" in name.lower():
+                print(f"🔎 PID {proc.pid} | CMD: {cmdline}")
+
+                # Ignore les sous-processus
+                if any(arg.startswith("--type=") for arg in cmdline_list):
+                    continue
+
+                is_flower = "--profile-directory=flowerpower" in cmdline
+                has_debug = "--remote-debugging-port=9222" in cmdline
+
+                if is_flower and has_debug:
+                    print("✅ Bonne instance Brave détectée.")
+                    found_good = True
+                    break
+                else:
+                    print("ℹ️ Autre instance Brave ignorée")
+
         except (psutil.NoSuchProcess, psutil.AccessDenied):
             continue
 
-    time.sleep(2)
+    if found_good:
+        return  # ✅ Instance existante ok
+
+    # Sinon on la lance
     print("🚀 Lancement de Brave FlowerPower en mode debug")
     subprocess.Popen([
         brave_path,
@@ -259,10 +242,12 @@ def ensure_flower_power_profile():
             brave_path,
             f"--user-data-dir={user_data_dir}",
             f"--profile-directory={profile_dir}",
+            port_arg,
             "--no-first-run",
             "--no-default-browser-check",
             url_vote
         ])
+        print(f"Brave lancé avec : --user-data-dir={user_data_dir} --profile-directory={profile_dir} --remote-debugging-port=9222")
         time.sleep(2)
 
 class AutoVoteApp:
@@ -365,10 +350,10 @@ class AutoVoteApp:
             if self.stop_event.is_set():
                 return
 
-            self.driver.execute_script("window.open('');")
-            time.sleep(1)
-            self.driver.switch_to.window(self.driver.window_handles[-1])
-            self.driver.get("https://www.kingpet.fr/vote/flower437")
+            #self.driver.execute_script("window.open('');")
+            #time.sleep(1)
+            #self.driver.switch_to.window(self.driver.window_handles[-1])
+            #self.driver.get("https://www.kingpet.fr/vote/flower437")
 
             WebDriverWait(self.driver, 10).until(
                 EC.url_contains("kingpet.fr/vote/flower437"))
@@ -404,11 +389,11 @@ class AutoVoteApp:
                 self.update_timer()
             self.root.after(605_000, self.vote_thread)
             self.count += 1
+            time.sleep(3)
             self.driver.refresh()
-            time.sleep(1)
-            self.driver.close()
-            if self.driver.window_handles:
-                self.driver.switch_to.window(self.driver.window_handles[0])
+            #self.driver.close()
+            #if self.driver.window_handles:
+                #self.driver.switch_to.window(self.driver.window_handles[0])
 
         except Exception as e:
             print(f"⛔ Erreur dans vote_action : {e}")
