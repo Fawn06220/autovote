@@ -103,6 +103,16 @@ Parce qu’il n’y a rien de plus loyal qu’un script qui clique pour son anim
 
 ---
 
+
+## 🐶 Personnalisation
+
+> 💡 Si tu veux utiliser ce script pour ton propre animal de compagnie, il te suffit de **changer l’URL KingPet** dans le code (ligne avec `https://www.kingpet.fr/vote/flower437`) et d’y mettre le **lien vers la page de ton animal**.  
+
+> Exemple :  
+> ```python
+> VOTE_URL = "https://www.kingpet.fr/vote/tonanimal123"
+> ```
+
 ## 🧙 Idées futures
 
 - Ajouter une **planification automatique sur plage horaire**
