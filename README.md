@@ -105,6 +105,8 @@ Parce qu’il n’y a rien de plus loyal qu’un script qui clique pour son anim
 
 
 ## 🐶 Personnalisation
+- 🎨 Tu peux aussi modifier **l'image de fond** de l'application en remplaçant simplement le fichier `img/Fond.jpg` par une image de ton choix (conserve le même nom ou adapte le chemin dans le script si besoin).
+
 
 - 💡 Si tu veux utiliser ce script pour ton propre animal de compagnie, il te suffit de **changer l’URL KingPet** dans le code (ligne avec `https://www.kingpet.fr/vote/flower437`) et d’y mettre le **lien vers la page de ton animal**.  
 
