@@ -65,7 +65,8 @@ Parce qu’il n’y a rien de plus loyal qu’un script qui clique pour son anim
 
 **Développé par Fawn**
 - 🧠 Aide : ChatGPT, ton assistant Python fidèle
-🎬 Démos vidéo : [http://ninjaaior.free.fr/devdemos/index.html](http://ninjaaior.free.fr/devdemos/index.html)
+
+-🎬 Démos vidéo : [http://ninjaaior.free.fr/devdemos/index.html](http://ninjaaior.free.fr/devdemos/index.html)
 
 ---
 
