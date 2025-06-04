@@ -12,7 +12,7 @@ import traceback
 import psutil
 
 # Vars
-profile_flag = os.path.join(os.path.dirname(__file__), "FlowerProfileReady.flag")
+profile_flag = "FlowerProfileReady.flag"
 brave_path = r"C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe"
 user_data_dir = os.path.join(os.getenv("LOCALAPPDATA"), "BraveSoftware", "Brave-Browser", "User Data")
 profile_dir = "FlowerPower"
